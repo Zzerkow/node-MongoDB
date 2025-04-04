@@ -15,16 +15,29 @@ fetch('/api/locations')
     });
   });
 
-// Gérer le formulaire d’ajout
 const form = document.getElementById('addForm');
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const name = document.getElementById('name').value;
-  const lat = parseFloat(document.getElementById('lat').value);
-  const lng = parseFloat(document.getElementById('lng').value);
+  const address = document.getElementById('address').value;
 
+  // Étape 1 : géocoder l'adresse (utilise Nominatim)
+  const geocodeURL = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+
+  const geoRes = await fetch(geocodeURL);
+  const geoData = await geoRes.json();
+
+  if (!geoData.length) {
+    alert("Adresse introuvable !");
+    return;
+  }
+
+  const lat = parseFloat(geoData[0].lat);
+  const lng = parseFloat(geoData[0].lon);
+
+  // Étape 2 : envoyer les données à MongoDB via l’API
   const body = {
     name,
     coordinates: {
@@ -41,8 +54,9 @@ form.addEventListener('submit', async (e) => {
 
   const saved = await res.json();
 
-  // Afficher le nouveau point sur la carte
-  L.marker([lat, lng]).addTo(map).bindPopup(name);
+  // Étape 3 : ajouter le marker et centrer la carte dessus
+  const marker = L.marker([lat, lng]).addTo(map).bindPopup(name).openPopup();
+  map.setView([lat, lng], 16); // zoom sur le nouveau point
 
   form.reset();
 });
