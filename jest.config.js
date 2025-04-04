@@ -6,8 +6,7 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.test.js'],
   
   // Setup file that runs before all tests
-  // Use setup-mock.js instead of setup.js to avoid MongoDB Memory Server issues
-  setupFilesAfterEnv: ['<rootDir>/__tests__/setup-mock.js'],
+  setupFilesAfterEnv: ['<rootDir>/__tests__/setup.js'],
   
   // Indicates whether each individual test should be reported during the run
   verbose: true,
