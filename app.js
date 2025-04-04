@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'vue')));
 //   .catch(err => console.error('Erreur MongoDB :', err));
 
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ MongoDB connecté (Docker) !'))
+  .then(() => console.log('✅ MongoDB connecté (Docker) !' , "https://localhost:3001/"))
   .catch(err => console.error('❌ Erreur MongoDB :', err));
 
 app.use('/api/locations', locationRoutes);
