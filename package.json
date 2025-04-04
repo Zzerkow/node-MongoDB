@@ -19,6 +19,7 @@
         "supertest": "^7.1.0"
     },
     "scripts": {
+        "test": "jest --detectOpenHandles",
         "docker": "docker compose down -v && docker compose up -d",
         "start": "nodemon app.js && docker exec -it mongo_db mongosh"
     }
