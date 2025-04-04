@@ -7,6 +7,7 @@ const http = require('http');
 const https = require('https');
 
 const locationRoutes = require('./routes/locationRoutes');
+const timeseriesRoutes = require('./routes/timeseriesRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -28,6 +29,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch(err => console.error('❌ Erreur MongoDB :', err));
 
 app.use('/api/locations', locationRoutes);
+app.use('/api/timeseries', timeseriesRoutes);
 
 https.createServer(sslOptions, app).listen(PORT, () => {
   console.log(`Serveur sécurisé en HTTPS sur le port ${PORT}`);
