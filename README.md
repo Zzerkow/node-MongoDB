@@ -1,15 +1,27 @@
-# MongoDB avec Docker + Compass
+# 🍃 MongoDB avec Docker + Compass
 
-## 📦 Lancement du conteneur MongoDB
+[![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
-0 - Installer les dependances
--> npm i
+**Environnement de développement clé en main pour MongoDB avec gestion Docker et interface Compass**
 
-1 - Lancer mongoDB
--> docker compose up --build 
-si vous voulez relancer l'installation:
--> docker compose down -v
--> docker compose up --build
+---
 
-2 - Lancer l'api
--> npm run dev
+## 🚀 Démarrage rapide
+
+### Prérequis
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [Node.js](https://nodejs.org/) v18+
+- [MongoDB Compass](https://www.mongodb.com/products/compass) (optionnel)
+
+### Installation
+```bash
+# 0. Installer les dépendances
+npm install
+
+# 1. Démarrer MongoDB dans Docker
+npm run docker
+
+# 2. Lancer l'API (dans un nouveau terminal)
+npm run start
