@@ -8,6 +8,14 @@
 
 ---
 
+## 👨‍💻 Développeurs
+- **Victor Besson** - [@Zzerkow](https://github.com/Zzerkow)
+- **Terry Marrot** - [@TerryMarrot](https://github.com/TerryMarrot)
+- **Samy Mansour** - [@SamyMansour](https://github.com/SamyMansour)
+- **Léo Filsnoël** - [@LeoFilsnoel](https://github.com/LeoFilsnoel)
+
+---
+
 ## 🚀 Démarrage rapide
 
 ### Prérequis
