@@ -7,6 +7,7 @@ const http = require('http');
 const https = require('https');
 
 const locationRoutes = require('./routes/locationRoutes');
+const timeseriesRoutes = require('./routes/timeseriesRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -27,6 +28,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Routes API
 app.use('/api/locations', locationRoutes);
+app.use('/api/timeseries', timeseriesRoutes);
 
 // Lancer le serveur
 https.createServer(sslOptions, app).listen(PORT, () => {
