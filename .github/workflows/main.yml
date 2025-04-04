@@ -17,20 +17,4 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /path/to/projet-2025
-            git pull
-            npm install
-            pm2 restart app  # Si tu utilises PM2
+        run: npm run test
