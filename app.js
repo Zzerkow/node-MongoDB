@@ -2,9 +2,17 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+const sslOptions = {
+  key: fs.readFileSync(path.join(__dirname, 'keys', 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'keys', 'cert.pem')) // Remplacez par le chemin de votre certificat
+};
 
 // Connexion à MongoDB
 mongoose.connect(process.env.MONGODB_URI)
@@ -28,6 +36,6 @@ app.get('/api/locations', async (req, res) => {
 });
 
 // Lancer le serveur
-app.listen(PORT, () => {
-  console.log(`Serveur en écoute : http://localhost:${PORT}`);
+https.createServer(sslOptions, app).listen(PORT, () => {
+  console.log(`Serveur sécurisé en HTTPS sur le port ${PORT}`);
 });
