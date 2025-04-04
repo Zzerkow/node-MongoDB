@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Location = require('../models/LocationModel');
-const mongoose = require('mongoose');
 
+// POST - Ajouter une nouvelle localisation
 router.post('/', async (req, res) => {
   try {
     const location = new Location(req.body);
@@ -13,6 +13,7 @@ router.post('/', async (req, res) => {
   }
 });
 
+// GET - Toutes les localisations
 router.get('/', async (req, res) => {
   try {
     const locations = await Location.find();
@@ -22,6 +23,7 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET - Une localisation par ID
 router.get('/:id', async (req, res) => {
   try {
     const location = await Location.findById(req.params.id);
@@ -32,6 +34,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// PUT - Modifier une localisation
 router.put('/:id', async (req, res) => {
   try {
     const location = await Location.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -41,6 +44,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// DELETE - Supprimer une localisation
 router.delete('/:id', async (req, res) => {
   try {
     await Location.findByIdAndDelete(req.params.id);
