@@ -11,17 +11,22 @@
 ## 🚀 Démarrage rapide
 
 ### Prérequis
+- [Git](https://git-scm.com/)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Node.js](https://nodejs.org/) v18+
 - [MongoDB Compass](https://www.mongodb.com/products/compass) (optionnel)
 
 ### Installation
 ```bash
-# 0. Installer les dépendances
+# 0. Cloner le dépôt
+git clone https://github.com/Zzerkow/node-MongoDB.git
+cd node-MongoDB
+
+# 1. Installer les dépendances
 npm install
 
-# 1. Démarrer MongoDB dans Docker
+# 2. Démarrer MongoDB dans Docker
 npm run docker
 
-# 2. Lancer l'API (dans un nouveau terminal)
+# 3. Lancer l'API (dans un nouveau terminal)
 npm run start
