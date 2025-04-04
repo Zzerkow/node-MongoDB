@@ -1,6 +1,6 @@
 const map = L.map('map').setView([45.18, 5.73], 13);
 const markers = [];
-let currentPeriod = "10min";
+let currentPeriod = "10min"; // Valeur toujours définie pour éviter des erreurs
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
@@ -8,7 +8,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 async function loadAllLocationsAndData() {
   try {
-    // Récupérer toutes les locations
     const res = await fetch('/api/locations');
     if (!res.ok) throw new Error('Erreur lors de la récupération des locations');
     const locations = await res.json();
@@ -20,27 +19,17 @@ async function loadAllLocationsAndData() {
     for (const loc of locations) {
       const [lng, lat] = loc.coordinates.coordinates;
 
-      // Récupérer les séries temporelles pour chaque location
-      const tsRes = await fetch(`/api/timeseries/location/${loc._id}?period=${currentPeriod}`);
-      if (!tsRes.ok) throw new Error(`Erreur lors de la récupération des séries temporelles pour la location ${loc._id}`);
-      const tsData = await tsRes.json();
+      // 🔒 FILTRE TEMPS DÉSACTIVÉ : on ne vérifie plus les séries temporelles
+      // const tsRes = await fetch(`/api/timeseries/location/${loc._id}?period=${currentPeriod}`);
+      // if (!tsRes.ok) throw new Error(`Erreur séries temporelles pour ${loc._id}`);
+      // const tsData = await tsRes.json();
+      // if (!tsData.length) continue;
 
-      if (!tsData.length) continue; // Ne pas afficher si aucune donnée
-
-      // Générer le contenu HTML pour les séries temporelles
-      const tsHtml = tsData.map(d =>
-        `<li>${new Date(d.timestamp).toLocaleTimeString()} — ${d.value}</li>`
-      ).join('');
-
-      // Contenu du popup
       const popupContent = `
         <strong>${loc.name}</strong><br/>
-        <button onclick="deleteLocation('${loc._id}', ${lat}, ${lng})" style="margin-top:5px;">🗑️ Supprimer</button>
-        <hr>
-        <strong>Mesures (${currentPeriod})</strong><ul>${tsHtml}</ul>
+        <button onclick="deleteLocation('${loc._id}', ${lat}, ${lng})" style="margin-top:5px;">Supprimer</button>
       `;
 
-      // Ajouter le marqueur à la carte
       const marker = L.marker([lat, lng]).addTo(map).bindPopup(popupContent);
       markers.push(marker);
     }
@@ -50,7 +39,7 @@ async function loadAllLocationsAndData() {
   }
 }
 
-// Formulaire classique (adresse manuelle)
+// === Formulaire classique (adresse manuelle) ===
 const form = document.getElementById('addForm');
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -73,12 +62,11 @@ form.addEventListener('submit', async (e) => {
   document.getElementById('addForm').reset();
 });
 
-// === Ajouter un point en cliquant sur la carte ===
+// === Ajout par clic sur la carte ===
 map.on('click', async function (e) {
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
-  try{
-
+  try {
     const reverseRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
     const reverseData = await reverseRes.json();
     const address = reverseData.display_name || 'Adresse inconnue';
@@ -103,15 +91,13 @@ map.on('click', async function (e) {
         map.closePopup();
       });
     }, 100);
-
-  }catch(e){
+  } catch (e) {
     console.error(e);
-    alert('Erreur lors de la récupération de l\'adresse. Il est possible que la limite mise par nomitim bloque la requête, veuillez attendre un petit peu...',e);
+    alert('Erreur lors de la récupération de l\'adresse. Nominatim peut être temporairement bloqué.');
   }
-  
 });
 
-// === Fonction d'ajout d'un point + première Time Series ===
+// === Ajout d’un point + première Time Series (pour tests futurs) ===
 async function saveAndDisplayPoint(name, lat, lng) {
   const body = {
     name,
@@ -129,7 +115,7 @@ async function saveAndDisplayPoint(name, lat, lng) {
 
   const saved = await res.json();
 
-  // Injection d'une première mesure time series
+  // Ajouter une mesure simulée dans Time Series
   await fetch('/api/timeseries', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -139,21 +125,22 @@ async function saveAndDisplayPoint(name, lat, lng) {
     })
   });
 
-  await loadAllLocationsAndData(); // rechargement de la carte
+  await loadAllLocationsAndData();
 }
 
 // === Suppression d’un point ===
 async function deleteLocation(id, lat, lng) {
   if (!confirm("Supprimer ce point ?")) return;
-
   await fetch(`/api/locations/${id}`, { method: 'DELETE' });
-
   await loadAllLocationsAndData();
 }
 
-// === Sélection de la période (filtrage) ===
+// === Sélecteur désactivé (UI visible mais non-fonctionnel) ===
 document.getElementById('timeFilter').addEventListener('change', async (e) => {
-  currentPeriod = e.target.value;
-  await loadAllLocationsAndData();
+  // currentPeriod = e.target.value;
+  // await loadAllLocationsAndData();
+  console.log("🔕 Le filtre est actuellement désactivé.");
 });
 
+// === Initialisation ===
+loadAllLocationsAndData();
