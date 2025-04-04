@@ -35,6 +35,15 @@
     form button {
       padding: 5px 10px;
     }
+    #filterForm select, #filterForm button {
+      margin: 5px 0;
+      padding: 5px;
+      width: 100%;
+    }
+    #filterForm {
+      top: 150px;
+      width: 15rem;
+    }
   </style>
 </head>
 <body>
@@ -43,9 +52,21 @@
     <input type="text" id="address" placeholder="Adresse (ex: 2 Place Doyen Gosse, 38000 Grenoble)" required />
     <button type="submit">Ajouter</button>
   </form>
-  
-
   <div id="map"></div>
+  <form id="filterForm">
+    <label for="timeFilter">Filtrer les mesures par période :</label>
+    <select id="timeFilter">
+      <option value="10min">Dernières 10 minutes</option>
+      <option value="1h">1 heure</option>
+      <option value="3h">3 heures</option>
+      <option value="6h">6 heures</option>
+      <option value="24h">24 heures</option>
+    </select>
+  </form>
+  
+  
+  <div id="timeseriesResults" style="padding: 10px; background: white; position: absolute; bottom: 10px; left: 10px; z-index: 1000; max-height: 200px; overflow-y: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3); width: 250px;"></div>
+  
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="index.js"></script>

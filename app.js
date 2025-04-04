@@ -3,11 +3,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const fs = require('fs');
-const http = require('http');
 const https = require('https');
 
 const locationRoutes = require('./routes/locationRoutes');
-const timeseriesRoutes = require('./routes/timeseriesRoutes');
+const timeSeriesRoutes = require('./routes/timeseriesRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,17 +19,13 @@ const sslOptions = {
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'vue')));
 
-// mongoose.connect(process.env.MONGODB_URI)
-//   .then(() => console.log('MongoDB connecté !'))
-//   .catch(err => console.error('Erreur MongoDB :', err));
-
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ MongoDB connecté (Docker) !' , "https://localhost:3001/"))
+  .then(() => console.log('✅ MongoDB connecté'))
   .catch(err => console.error('❌ Erreur MongoDB :', err));
 
 app.use('/api/locations', locationRoutes);
-app.use('/api/timeseries', timeseriesRoutes);
+app.use('/api/timeseries', timeSeriesRoutes);
 
 https.createServer(sslOptions, app).listen(PORT, () => {
-  console.log(`Serveur sécurisé en HTTPS sur le port ${PORT}`);
+  console.log(`🔒 Serveur HTTPS lancé sur https://localhost:${PORT}`);
 });
