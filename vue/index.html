@@ -2,26 +2,48 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Carte Leaflet</title>
+  <title>Carte Leaflet - Bon Plan</title>
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   />
-
   <style>
     #map {
       height: 100vh;
       width: 100%;
     }
+    form {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    form input {
+      display: block;
+      margin-bottom: 5px;
+      width: 200px;
+      padding: 5px;
+    }
+    form button {
+      padding: 5px 10px;
+    }
   </style>
 </head>
 <body>
+  <form id="addForm">
+    <input type="text" id="name" placeholder="Titre du bon plan" required />
+    <input type="text" id="address" placeholder="Adresse (ex: 10 rue Rivoli, Paris)" required />
+    <button type="submit">Ajouter</button>
+  </form>
+  
+
   <div id="map"></div>
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  ></script>
 
-
-  <script src="./index.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="index.js"></script>
 </body>
 </html>
