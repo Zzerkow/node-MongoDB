@@ -4,16 +4,23 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-// Charger les points existants depuis MongoDB
 fetch('/api/locations')
-    .then(res => res.json())
-    .then(locations => {
-      locations.forEach(loc => {
-        const [lng, lat] = loc.coordinates.coordinates;
-        L.marker([lat, lng]).addTo(map)
-            .bindPopup(loc.name);
-      });
+  .then(res => res.json())
+  .then(locations => {
+    locations.forEach(loc => {
+      const [lng, lat] = loc.coordinates.coordinates;
+
+      const marker = L.marker([lat, lng]).addTo(map);
+
+      const popupContent = `
+        <strong>${loc.name}</strong><br/>
+        <button onclick="deleteLocation('${loc._id}', ${lat}, ${lng})" style="margin-top:5px;">Supprimer</button>
+      `;
+
+      marker.bindPopup(popupContent);
     });
+  });
+
 
 // Formulaire classique (adresse manuelle)
 const form = document.getElementById('addForm');
@@ -38,7 +45,6 @@ form.addEventListener('submit', async (e) => {
   form.reset();
 });
 
-// Fonction utilitaire pour envoyer à MongoDB et afficher sur carte
 async function saveAndDisplayPoint(name, lat, lng) {
   const body = {
     name,
@@ -60,7 +66,28 @@ async function saveAndDisplayPoint(name, lat, lng) {
   map.setView([lat, lng], 16);
 }
 
-// 👉 Clic sur la carte
+async function deleteLocation(id, lat, lng) {
+  if (!confirm("Supprimer ce point ?")) return;
+
+  const res = await fetch(`/api/locations/${id}`, {
+    method: 'DELETE'
+  });
+
+  if (res.ok) {
+    map.eachLayer(layer => {
+      if (layer instanceof L.Marker) {
+        const pos = layer.getLatLng();
+        if (pos.lat === lat && pos.lng === lng) {
+          map.removeLayer(layer);
+        }
+      }
+    });
+  } else {
+    alert("Erreur lors de la suppression.");
+  }
+}
+
+
 map.on('click', async function (e) {
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
