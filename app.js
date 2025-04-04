@@ -19,9 +19,13 @@ const sslOptions = {
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'vue')));
 
+// mongoose.connect(process.env.MONGODB_URI)
+//   .then(() => console.log('MongoDB connecté !'))
+//   .catch(err => console.error('Erreur MongoDB :', err));
+
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connecté !'))
-  .catch(err => console.error('Erreur MongoDB :', err));
+  .then(() => console.log('✅ MongoDB connecté (Docker) !'))
+  .catch(err => console.error('❌ Erreur MongoDB :', err));
 
 app.use('/api/locations', locationRoutes);
 
