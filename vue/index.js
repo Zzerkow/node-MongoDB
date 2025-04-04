@@ -1,4 +1,4 @@
-const map = L.map('map').setView([45.18, 5.73], 13);
+const map = L.map('map').setView([45.18, 15.73], 13);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
@@ -7,11 +7,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 fetch('/api/locations')
   .then(res => res.json())
   .then(locations => {
+    console.log(locations); // Vérifiez ici la structure des données
     locations.forEach(loc => {
       const [lng, lat] = loc.coordinates.coordinates;
-
-      const marker = L.marker([lat, lng]).addTo(map);
-
+      const marker = L.marker([lat, lng]).addTo(map).bindPopup(loc.name).openPopup();
       const popupContent = `
         <strong>${loc.name}</strong><br/>
         <button onclick="deleteLocation('${loc._id}', ${lat}, ${lng})" style="margin-top:5px;">Supprimer</button>
@@ -65,8 +64,16 @@ async function saveAndDisplayPoint(name, lat, lng) {
   });
 
   const saved = await res.json();
+  if (!saved) {
+    alert("Erreur lors de l'enregistrement du point.");
+    return;
+  }
+  const popupContent = `
+    <strong>${saved.name}</strong><br/>
+    <button onclick="deleteLocation('${saved._id}', ${lat}, ${lng})" style="margin-top:5px;">Supprimer</button>
+  `;
 
-  const marker = L.marker([lat, lng]).addTo(map).bindPopup(name).openPopup();
+  const marker = L.marker([lat, lng]).addTo(map).bindPopup(popupContent).openPopup();
   map.setView([lat, lng], 16);
 }
 
