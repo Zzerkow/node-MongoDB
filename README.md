@@ -9,10 +9,10 @@
 ---
 
 ## 👨‍💻 Développeurs
-- **Victor Besson** - [@Zzerkow](https://github.com/Zzerkow)
-- **Terry Marrot** - [@TerryMarrot](https://github.com/TerryMarrot)
-- **Samy Mansour** - [@SamyMansour](https://github.com/SamyMansour)
-- **Léo Filsnoël** - [@LeoFilsnoel](https://github.com/LeoFilsnoel)
+- **Victor Besson** - [[@Zzerkow](https://github.com/Zzerkow](https://github.com/Neoznzoe))
+- **Terry Marrot** - [[@TerryMarrot](https://github.com/TerryMarrot](https://github.com/tatsy0196))
+- **Samy Mansour** - [@[SamyMansour](https://github.com/SamyMansour](https://github.com/l3miage-mansosam))
+- **Léo Filsnoël** - [[@LeoFilsnoel](https://github.com/LeoFilsnoel](https://github.com/Zzerkow))
 
 ---
 
