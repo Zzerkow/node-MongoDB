@@ -6,14 +6,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Charger les points existants depuis MongoDB
 fetch('/api/locations')
-  .then(res => res.json())
-  .then(locations => {
-    locations.forEach(loc => {
-      const [lng, lat] = loc.coordinates.coordinates;
-      L.marker([lat, lng]).addTo(map)
-        .bindPopup(loc.name);
+    .then(res => res.json())
+    .then(locations => {
+      locations.forEach(loc => {
+        const [lng, lat] = loc.coordinates.coordinates;
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup(loc.name);
+      });
     });
-  });
 
 const form = document.getElementById('addForm');
 
@@ -59,4 +59,23 @@ form.addEventListener('submit', async (e) => {
   map.setView([lat, lng], 16); // zoom sur le nouveau point
 
   form.reset();
+});
+
+// Ajouter un événement de clic sur la carte
+map.on('click', async (e) => {
+  const lat = e.latlng.lat;
+  const lng = e.latlng.lng;
+
+  // Utiliser les coordonnées pour géocoder l'adresse
+  const geocodeURL = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`;
+
+  const geoRes = await fetch(geocodeURL);
+  const geoData = await geoRes.json();
+
+  if (geoData && geoData.address) {
+    const address = geoData.address.road + ', ' + geoData.address.city + ', ' + geoData.address.country;
+
+    // Remplir le champ adresse avec l'adresse obtenue
+    document.getElementById('address').value = address;
+  }
 });
