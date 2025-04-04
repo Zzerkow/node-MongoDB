@@ -1,4 +1,4 @@
-const map = L.map('map').setView([45.18, 15.73], 13);
+const map = L.map('map').setView([45.18, 5.73], 13);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
@@ -7,7 +7,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 fetch('/api/locations')
   .then(res => res.json())
   .then(locations => {
-    console.log(locations); // Vérifiez ici la structure des données
     locations.forEach(loc => {
       const [lng, lat] = loc.coordinates.coordinates;
       const marker = L.marker([lat, lng]).addTo(map).bindPopup(loc.name).openPopup();
@@ -19,8 +18,6 @@ fetch('/api/locations')
     });
   });
 
-
-// Formulaire classique (adresse manuelle)
 const form = document.getElementById('addForm');
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -103,13 +100,11 @@ map.on('click', async function (e) {
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
 
-  // Reverse geocoding pour récupérer l'adresse
   const reverseRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
   const reverseData = await reverseRes.json();
 
   const address = reverseData.display_name || 'Adresse inconnue';
 
-  // Créer un mini-formulaire sur la carte
   const popupContent = `
     <strong>Adresse détectée :</strong><br>${address}<br><br>
     <input type="text" id="popupTitle" placeholder="Titre du bon plan" style="width:100%; margin-top:5px;" />
@@ -121,7 +116,6 @@ map.on('click', async function (e) {
     .setContent(popupContent)
     .openOn(map);
 
-  // Attendre que le DOM du popup soit prêt
   setTimeout(() => {
     document.getElementById('popupSave').addEventListener('click', async () => {
       const name = document.getElementById('popupTitle').value;
@@ -132,12 +126,10 @@ map.on('click', async function (e) {
   }, 100);
 });
 
-// Ajouter un événement de clic sur la carte
 map.on('click', async (e) => {
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
 
-  // Utiliser les coordonnées pour géocoder l'adresse
   const geocodeURL = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`;
 
   const geoRes = await fetch(geocodeURL);
@@ -146,7 +138,6 @@ map.on('click', async (e) => {
   if (geoData && geoData.address) {
     const address = geoData.address.road + ', ' + geoData.address.city + ', ' + geoData.address.country;
 
-    // Remplir le champ adresse avec l'adresse obtenue
     document.getElementById('address').value = address;
   }
 });

@@ -17,6 +17,7 @@
         "nodemon": "^3.1.9"
     },
     "scripts": {
-        "start": "nodemon app.js && docker exec -it mongo_db mongosh",
+        "docker": "docker compose down -v && docker compose up -d",
+        "start": "nodemon app.js && docker exec -it mongo_db mongosh"
     }
 }
