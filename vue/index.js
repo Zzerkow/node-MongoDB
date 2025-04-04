@@ -1,4 +1,4 @@
-const map = L.map('map').setView([48.8566, 2.3522], 13);
+const map = L.map('map').setView([45.18, 5.73], 13);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
@@ -16,7 +16,6 @@ fetch('/api/locations')
         <strong>${loc.name}</strong><br/>
         <button onclick="deleteLocation('${loc._id}', ${lat}, ${lng})" style="margin-top:5px;">Supprimer</button>
       `;
-
       marker.bindPopup(popupContent);
     });
   });
@@ -26,23 +25,28 @@ fetch('/api/locations')
 const form = document.getElementById('addForm');
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-
-  const name = document.getElementById('name').value;
-  const address = document.getElementById('address').value;
-
-  const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`);
-  const geoData = await geoRes.json();
-
-  if (!geoData.length) {
-    alert("Adresse introuvable !");
-    return;
+  try{
+    const name = document.getElementById('name').value;
+    const address = document.getElementById('address').value;
+  
+    const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`);
+  
+    const geoData = await geoRes.json();
+  
+    if (!geoData.length) {
+      alert("Adresse introuvable !");
+      return;
+    }
+  
+    const lat = parseFloat(geoData[0].lat);
+    const lng = parseFloat(geoData[0].lon);
+  
+    await saveAndDisplayPoint(name, lat, lng);
+    form.reset();
+  }catch(e){
+    console.error(e);
+    alert("Erreur lors de la soumission du formulaire.");
   }
-
-  const lat = parseFloat(geoData[0].lat);
-  const lng = parseFloat(geoData[0].lon);
-
-  await saveAndDisplayPoint(name, lat, lng);
-  form.reset();
 });
 
 async function saveAndDisplayPoint(name, lat, lng) {
