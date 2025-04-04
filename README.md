@@ -9,10 +9,10 @@
 ---
 
 ## 👨‍💻 Développeurs
-- **Victor Besson** - [[@Neoznzoe](https://github.com/Neoznzoe](https://github.com/Neoznzoe))
-- **Terry Marrot** - [[@tatsy0196](https://github.com/tatsy0196](https://github.com/tatsy0196))
-- **Samy Mansour** - [@[l3miage-mansosam](https://github.com/l3miage-mansosam](https://github.com/l3miage-mansosam))
-- **Léo Filsnoël** - [[@Zzerkow](https://github.com/Zzerkow](https://github.com/Zzerkow))
+- **Victor Besson** -
+- **Terry Marrot** -
+- **Samy Mansour** -
+- **Léo Filsnoël** -
 
 ---
 
